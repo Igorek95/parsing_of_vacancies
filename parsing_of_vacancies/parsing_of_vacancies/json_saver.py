@@ -2,6 +2,8 @@ import json
 
 from parsing_of_vacancies.parsing_of_vacancies.vacancy import Vacancy
 from abc import ABC, abstractmethod
+
+
 class Saver(ABC):
     @abstractmethod
     def save_to_file(self):
@@ -18,8 +20,10 @@ class Saver(ABC):
 
 class JSONSaver(Saver):
     vacancies = []
+
     def __init__(self, filename):
         self.filename = filename
+
     def save_to_file(self):
         vacancies_data = [vacancy.__dict__ for vacancy in Vacancy._Vacancy__data]
         with open(self.filename, "w", encoding="utf-8") as file:

@@ -12,7 +12,22 @@ class Vacancy:
         self.link = link
         self.address = address
         self.responsibilities = responsibilities
+        self.__avr_salary = self.calc_salary(self.salary_from,  self.salary_to)
         Vacancy.__data.append(self)
+
+    @staticmethod
+    def calc_salary(salary_min: int, salary_max: int) -> int:
+        if salary_min == 0 or salary_min is None:
+            return salary_max
+        elif salary_max == 0 or salary_max is None:
+            return salary_min
+        else:
+            avr_salary = (salary_min + salary_max) // 2
+            return avr_salary
+
+    @property
+    def avr_salary(self):
+        return self.__avr_salary
 
     @property
     def data(self):

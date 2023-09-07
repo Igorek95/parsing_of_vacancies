@@ -10,25 +10,23 @@ class HeadHunterAPI(JobAPI):
     def __init__(self):
         self.base_url = "https://api.hh.ru/vacancies"
 
-    def get_vacancies(self, search_query='', page=0, retry_num=5):
+    def get_vacancies(self, search_query=''):
         params = {
             "area": 1,
-            "page": page,
-            'per_page': 100,
+            'per_page': 30,
             'host': 'hh.ru'
         }
         if search_query:
             params['text'] = search_query
-        for _ in range(retry_num):
-            response = requests.get(self.base_url, params)
-            if response.status_code == 200:
-                data = response.json()
-                response.close()
-                vacancies = data.get("items", [])
-                self.data_vacancies(vacancies)
-            else:
-                print("Ошибка получения данных")
-                return []
+        response = requests.get(self.base_url, params)
+        if response.status_code == 200:
+            data = response.json()
+            response.close()
+            vacancies = data.get("items", [])
+            self.data_vacancies(vacancies)
+        else:
+            print("Ошибка получения данных")
+            return []
 
     @staticmethod
     def data_vacancies(vacancies):
