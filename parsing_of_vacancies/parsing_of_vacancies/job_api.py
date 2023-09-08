@@ -1,9 +1,16 @@
 from abc import ABC, abstractmethod
+
+
 class JobAPI(ABC):
-    def __init__(self):
-        pass
+    """
+    Абстрактный класс для взаимодействия с API по получению информации о вакансиях.
+
+    """
 
     @abstractmethod
     def get_vacancies(self, search_query):
-        pass
+        """
+        Абстрактный метод для получения списка вакансий.
 
+        """
+        pass

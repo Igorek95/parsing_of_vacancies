@@ -5,12 +5,29 @@ from parsing_of_vacancies.parsing_of_vacancies.vacancy import Vacancy
 
 
 class SuperJobAPI(JobAPI):
+    """
+    Класс для взаимодействия с API SuperJob и получения информации о вакансиях.
+
+    Attributes:
+        superjob_api_key (str): Ключ API SuperJob.
+        base_url (str): Базовый URL для запросов к API SuperJob.
+    """
+
     superjob_api_key = api_key
 
     def __init__(self):
+        """
+        Инициализирует объект SuperJobAPI и устанавливает базовый URL API SuperJob.
+        """
         self.base_url = "https://api.superjob.ru/2.0/vacancies"
 
     def get_vacancies(self, search_query):
+        """
+        Получает список вакансий с использованием API SuperJob.
+
+        Args:
+            search_query (str): Поисковый запрос для фильтрации вакансий.
+        """
         headers = {
             "User-Agent": "Your User Agent",
             "X-Api-App-Id": self.superjob_api_key,
@@ -18,7 +35,7 @@ class SuperJobAPI(JobAPI):
         params = {
             "town": "Москва",
             "keyword": search_query,
-            "count": 30
+            "count": 100
         }
 
         response = requests.get(self.base_url, headers=headers, params=params)
@@ -33,6 +50,12 @@ class SuperJobAPI(JobAPI):
 
     @staticmethod
     def data_vacancies(vacancies):
+        """
+        Обрабатывает данные о вакансиях и создает объекты класса Vacancy.
+
+        Args:
+            vacancies (list): Список данных о вакансиях, полученных из API SuperJob.
+        """
         for vacancy in vacancies:
             name_job = vacancy.get('profession')
             salary_from = vacancy.get('payment_from', 'Не указана')
@@ -42,9 +65,3 @@ class SuperJobAPI(JobAPI):
             address = vacancy['town'].get('title')
             responsibilities = vacancy.get('candidat')
             Vacancy(name_job, salary_from, salary_to, currency, link, address, responsibilities)
-
-#
-# sj = SuperJobAPI()
-# user_input = input("Введите ваше запрос: ")
-# vacancies = sj.get_vacancies(user_input)
-# print(Vacancy.data)

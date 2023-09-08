@@ -1,5 +1,4 @@
 import pprint
-
 import requests
 from parsing_of_vacancies.parsing_of_vacancies.vacancy import Vacancy
 from parsing_of_vacancies.parsing_of_vacancies.job_api import JobAPI
@@ -7,13 +6,31 @@ from parsing_of_vacancies.parsing_of_vacancies.json_saver import JSONSaver
 
 
 class HeadHunterAPI(JobAPI):
+    """
+    Класс для взаимодействия с API HeadHunter и получения информации о вакансиях.
+
+    Attributes:
+        base_url (str): Базовый URL для запросов к API HeadHunter.
+    """
+
     def __init__(self):
+        """
+        Инициализирует объект HeadHunterAPI и устанавливает базовый URL API HeadHunter.
+
+        """
         self.base_url = "https://api.hh.ru/vacancies"
 
     def get_vacancies(self, search_query=''):
+        """
+        Получает список вакансий с использованием API HeadHunter.
+
+        Args:
+            search_query (str, optional): Поисковый запрос для фильтрации вакансий. По умолчанию пустая строка.
+
+        """
         params = {
             "area": 1,
-            'per_page': 30,
+            'per_page': 100,
             'host': 'hh.ru'
         }
         if search_query:
@@ -30,6 +47,12 @@ class HeadHunterAPI(JobAPI):
 
     @staticmethod
     def data_vacancies(vacancies):
+        """
+        Обрабатывает данные о вакансиях и создает объекты класса Vacancy.
+
+        Args:
+            vacancies (list): Список данных о вакансиях, полученных из API HeadHunter.
+        """
         for vacancy in vacancies:
             name_job = vacancy.get('name')
             if vacancy.get('salary'):
@@ -40,12 +63,3 @@ class HeadHunterAPI(JobAPI):
             address = vacancy['area'].get('name')
             responsibilities = vacancy['snippet'].get('requirement')
             Vacancy(name_job, salary_from, salary_to, currency, link, address, responsibilities)
-
-
-# hh = HeadHunterAPI()
-# appa = hh.get_vacancies('python')
-# json_saver = JSONSaver('Axaxa')
-# json_saver.save_to_file()
-# pprint.pprint(json_saver.get_vacancies_by_salary(110000))
-# json_saver.delete_vacancy()
-# pprint.pprint(hh.get_vacancies('python'))

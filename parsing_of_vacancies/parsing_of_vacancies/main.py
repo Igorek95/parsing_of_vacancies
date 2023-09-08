@@ -1,5 +1,10 @@
 import utils
 
-if __name__ == '__main__':
+
+def main():
     utils.platform()
     utils.method()
+
+
+if __name__ == '__main__':
+    main()
