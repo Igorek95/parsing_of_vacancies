@@ -33,6 +33,7 @@ class JSONSaver(Saver):
         vacancies_data = [vacancy.__dict__ for vacancy in Vacancy._Vacancy__data]
         with open(self.filename, "w", encoding="utf-8") as file:
             json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
+            Vacancy._Vacancy__data.clear()
 
     def load_from_file(self):
         """
@@ -61,16 +62,14 @@ class JSONSaver(Saver):
         with open(second_file_path, 'r', encoding="utf-8") as file2:
             data2 = json.load(file2)
 
-        result = data1[0:30] + data2[0:30]
+        result = data1 + data2
 
         with open(output_file_path, 'w', encoding="utf-8") as output_file:
             json.dump(result, output_file, ensure_ascii=False, indent=4)
 
     def delete_vacancy(self):
         """
-        Удаляет все данные о вакансиях и очищает JSON-файл.
-
-        Удаляет все данные о вакансиях из списка и очищает содержимое JSON-файла.
+        Удаляет все данные о вакансиях из списка и JSON файла.
 
         """
         self.vacancies.clear()
