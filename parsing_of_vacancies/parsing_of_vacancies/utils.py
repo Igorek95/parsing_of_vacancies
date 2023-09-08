@@ -73,13 +73,17 @@ def process_both_platforms():
     hh = HeadHunterAPI()
     sj = SuperJobAPI()
     user_vacancy = input("Введите название вакансии: \n-> ")
+
     hh.get_vacancies(user_vacancy)
     hh_save = JSONSaver('vacancy_hh.json')
     hh_save.save_to_file()
+
     sj.get_vacancies(user_vacancy)
     sj_save = JSONSaver('vacancy_sj.json')
     sj_save.save_to_file()
+
     JSONSaver.merge_json_files('vacancy_hh.json', 'vacancy_sj.json', 'vacancy.json')
+
     os.remove('vacancy_sj.json')
     os.remove('vacancy_hh.json')
 
@@ -122,30 +126,32 @@ def method():
             console_output('vacancy.json')
         elif user_input == '2':
             user_salary = int(input('Введите минимальную зарплату: \n-> '))
-            user_action = input('Что вы хотите сделать:\n1: Вывести в консоль.\n2: Сохранить\n3: Вернуться назад\n ->')
+            while True:
+                user_action = input('Что вы хотите сделать:\n1: Вывести в консоль.\n2: Сохранить\n3: Вернуться назад\n ->')
 
-            if user_action == '1':
-                get_vacancies_by_salary(user_salary)
-            elif user_action == '2':
-                save_vacancy_by_salary(user_salary)
-            elif user_action == '3':
-                continue
-            else:
-                print('Вы ввели неверное число')
+                if user_action == '1':
+                    get_vacancies_by_salary(user_salary)
+                elif user_action == '2':
+                    save_vacancy_by_salary(user_salary)
+                elif user_action == '3':
+                    method()
+                else:
+                    print('Вы ввели неверное число')
 
         elif user_input == '3':
-            user_delete = input(
-                'Выберите какие данные удалить:\n1: Список вакансий\n2: Список отфильтрованных вакансий\n3: Вернуться '
-                'назад\n')
+            while True:
+                user_delete = input(
+                    'Выберите какие данные удалить:\n1: Список вакансий\n2: Список отфильтрованных вакансий\n3: Вернуться '
+                    'назад\n')
 
-            if user_delete == '1':
-                delete_data_vacancy('vacancy.json')
-            elif user_delete == '2':
-                delete_data_vacancy('filtered_vacancies.json')
-            elif user_delete == '3':
-                continue
-            else:
-                print('Вы ввели неверное число')
+                if user_delete == '1':
+                    delete_data_vacancy('vacancy.json')
+                elif user_delete == '2':
+                    delete_data_vacancy('filtered_vacancies.json')
+                elif user_delete == '3':
+                    method()
+                else:
+                    print('Вы ввели неверное число')
 
         elif user_input == '4':
             while True:
@@ -193,7 +199,6 @@ def get_vacancies_by_salary(min_salary: int):
                   f'Зарплата: {avr_salary}.{currency}\n'
                   f'Ссылка: {link}\n'
                   f'Описание: {responsibilities}\n')
-            break
 
 
 def save_vacancy_by_salary(min_salary: int):

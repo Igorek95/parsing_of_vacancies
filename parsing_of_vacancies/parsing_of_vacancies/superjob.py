@@ -35,7 +35,7 @@ class SuperJobAPI(JobAPI):
         params = {
             "town": "Москва",
             "keyword": search_query,
-            "count": 100
+            "count": 40
         }
 
         response = requests.get(self.base_url, headers=headers, params=params)
