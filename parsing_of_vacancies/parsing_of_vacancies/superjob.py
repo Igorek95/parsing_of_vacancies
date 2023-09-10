@@ -58,9 +58,9 @@ class SuperJobAPI(JobAPI):
         """
         for vacancy in vacancies:
             name_job = vacancy.get('profession')
-            salary_from = vacancy.get('payment_from') if vacancy.get('payment_from') else 0
-            salary_to = vacancy.get('payment_to') if vacancy.get('payment_to') else 0
-            currency = vacancy.get('currency') if vacancy.get('currency') else ""
+            salary_from = vacancy.get('payment_from', 0)
+            salary_to = vacancy.get('payment_to', 0)
+            currency = vacancy.get('currency', "")
             link = vacancy.get('link', 'Не указана')
             address = vacancy['town'].get('title')
             responsibilities = vacancy.get('candidat')
