@@ -56,9 +56,13 @@ class HeadHunterAPI(JobAPI):
         for vacancy in vacancies:
             name_job = vacancy.get('name')
             if vacancy.get('salary'):
-                salary_from = vacancy['salary'].get('from', "Не указана")
-                salary_to = vacancy['salary'].get('to', "Не указана")
-                currency = vacancy['salary'].get('currency', "")
+                salary_from = vacancy['salary'].get('from')
+                salary_to = vacancy['salary'].get('to')
+                currency = vacancy['salary'].get('currency')
+            else:
+                salary_from = 0
+                salary_to = 0
+                currency = ""
             link = vacancy.get('alternate_url', 'Не указана')
             address = vacancy['area'].get('name')
             responsibilities = vacancy['snippet'].get('requirement')
