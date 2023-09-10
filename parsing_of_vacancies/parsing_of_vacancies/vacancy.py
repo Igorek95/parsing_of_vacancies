@@ -32,9 +32,9 @@ class Vacancy:
             responsibilities (str): Описание обязанностей.
         """
         self.name_job = name_job
-        self.salary_from = salary_from
-        self.salary_to = salary_to
-        self.currency = currency
+        self.salary_from = int(salary_from)
+        self.salary_to = int(salary_to)
+        self.currency = str(currency)
         self.link = link
         self.address = address
         self.responsibilities = responsibilities
