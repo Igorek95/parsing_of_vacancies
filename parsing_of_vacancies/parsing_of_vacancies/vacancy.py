@@ -1,6 +1,3 @@
-import json
-
-
 class Vacancy:
     """
     Класс для представления вакансии.
@@ -13,7 +10,7 @@ class Vacancy:
         link (str): Ссылка на вакансию.
         address (str): Место работы.
         responsibilities (str): Описание обязанностей.
-        __avr_salary (int): Средняя зарплата (вычисляется автоматически).
+        _avr_salary (int): Средняя зарплата (вычисляется автоматически).
     """
 
     __data = []
@@ -38,7 +35,7 @@ class Vacancy:
         self.link = link
         self.address = address
         self.responsibilities = responsibilities
-        self.__avr_salary = self.calc_salary(self.salary_from, self.salary_to)
+        self._avr_salary = self.calc_salary(self.salary_from, self.salary_to)
         Vacancy.__data.append(self)
 
     @staticmethod
@@ -69,7 +66,7 @@ class Vacancy:
         Returns:
             int: Средняя зарплата.
         """
-        return self.__avr_salary
+        return self._avr_salary
 
     @property
     def data(self):
@@ -95,8 +92,6 @@ class Vacancy:
         return f"""1.{self.name_job}\n 2.{self.salary_from}\n 3.{self.salary_to}\n 4.{self.currency}\n 5.{self.address}
 6.{self.responsibilities}
 """
-
-
 
     @classmethod
     def clean_data(cls):

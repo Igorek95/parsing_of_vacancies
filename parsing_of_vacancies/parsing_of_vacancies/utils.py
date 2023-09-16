@@ -11,7 +11,7 @@ platforms = {1: 'HH.ru',
              4: "Выход"
              }
 choice_method = {1: 'Вывести в консоль',
-                 2: "Отфильтровать по зарплате",
+                 2: "Отфильтровать по средней зарплате",
                  3: "Удалить данные",
                  4: "Вывести топ 10",
                  5: "Вернуться в главное меню"
@@ -101,7 +101,7 @@ def console_output(filename):
         for vacancy in data_vacancy:
             name_job = vacancy.get('name_job')
             address = vacancy.get('address')
-            avr_salary = vacancy.get('_Vacancy__avr_salary')
+            avr_salary = vacancy.get('_avr_salary')
             currency = vacancy.get('currency')
             responsibilities = vacancy.get('responsibilities')
             link = vacancy.get('link')
@@ -125,9 +125,10 @@ def method():
         if user_input == '1':
             console_output('vacancy.json')
         elif user_input == '2':
-            user_salary = int(input('Введите минимальную зарплату: \n-> '))
+            user_salary = int(input('Введите среднюю зарплату: \n-> '))
             while True:
-                user_action = input('Что вы хотите сделать:\n1: Вывести в консоль.\n2: Сохранить\n3: Вернуться назад\n ->')
+                user_action = input('Что вы хотите сделать:\n1: Вывести в консоль.\n2: Сохранить\n3: Вернуться '
+                                    'назад\n ->')
 
                 if user_action == '1':
                     get_vacancies_by_salary(user_salary)
@@ -141,7 +142,8 @@ def method():
         elif user_input == '3':
             while True:
                 user_delete = input(
-                    'Выберите какие данные удалить:\n1: Список вакансий\n2: Список отфильтрованных вакансий\n3: Вернуться '
+                    'Выберите какие данные удалить:\n1: Список вакансий\n2: Список отфильтрованных вакансий\n3: '
+                    'Вернуться'
                     'назад\n')
 
                 if user_delete == '1':
@@ -187,10 +189,10 @@ def get_vacancies_by_salary(min_salary: int):
     json_load = JSONSaver('vacancy.json')
     json_load.load_from_file()
     for vacancy in JSONSaver.vacancies:
-        if vacancy.get("_Vacancy__avr_salary") >= min_salary:
+        if vacancy.get("_avr_salary") >= min_salary:
             name_job = vacancy.get('name_job')
             address = vacancy.get('address')
-            avr_salary = vacancy.get('_Vacancy__avr_salary')
+            avr_salary = vacancy.get('_avr_salary')
             currency = vacancy.get('currency')
             responsibilities = vacancy.get('responsibilities')
             link = vacancy.get('link')
@@ -201,23 +203,20 @@ def get_vacancies_by_salary(min_salary: int):
                   f'Описание: {responsibilities}\n')
 
 
-def save_vacancy_by_salary(min_salary: int):
+def save_vacancy_by_salary(avr_salary: int):
     """
     Сохраняет вакансии с зарплатой не ниже указанной в JSON-файл.
 
     Args:
-        min_salary (int): Минимальная зарплата для фильтрации вакансий.
+        avr_salary (int): Срелняя зарплата для фильтрации вакансий.
     """
     if not JSONSaver.vacancies:
         json_load = JSONSaver('vacancy.json')
         json_load.load_from_file()
     filtered_vacancies = []
     for vacancy in JSONSaver.vacancies:
-        if vacancy.get('salary_from'):
-            if vacancy.get("salary_from") >= min_salary:
-                filtered_vacancies.append(vacancy)
-        elif vacancy.get('salary_to'):
-            if vacancy.get("salary_to") >= min_salary:
+        if vacancy.get('_avr_salary'):
+            if vacancy.get("_avr_salary") >= avr_salary:
                 filtered_vacancies.append(vacancy)
     with open('filtered_vacancies.json', 'w', encoding='utf-8') as file:
         json.dump(filtered_vacancies, file, ensure_ascii=False, indent=4)
@@ -236,7 +235,7 @@ def top_vacancy(filename):
     for vacancy in sorted_json[:10]:
         name_job = vacancy.get('name_job')
         address = vacancy.get('address')
-        avr_salary = vacancy.get('_Vacancy__avr_salary')
+        avr_salary = vacancy.get('_avr_salary')
         currency = vacancy.get('currency')
         responsibilities = vacancy.get('responsibilities')
         link = vacancy.get('link')
